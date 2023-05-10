@@ -57,13 +57,13 @@
  * WLAN_SSID is the WIFI network name where user wants connect the XDK device.
  * Make sure to update the WLAN_PSK constant according to your required WIFI network.
  */
-#define WLAN_SSID                           "xxx"
+#define WLAN_SSID                           "YOUR_WIFI_SSID"
 
 /**
  * WLAN_PSK is the WIFI router WPA/WPA2 password used at the Wifi network connection.
  * Make sure to update the WLAN_PSK constant according to your router password.
  */
-#define WLAN_PSK                            "xxx"
+#define WLAN_PSK                            "YOUR_WIFI_PASSWORD"
 
 /**
  * WLAN_STATIC_IP is a boolean. If "true" then static IP will be assigned and if "false" then DHCP is used.
@@ -103,7 +103,7 @@
 /**
  * SNTP_SERVER_URL is the SNTP server URL.
  */
-#define SNTP_SERVER_URL                     "xxx"
+#define SNTP_SERVER_URL                     "SNTP_ADDRESS"
 
 /**
  * SNTP_SERVER_PORT is the SNTP server port number.
@@ -115,7 +115,7 @@
 /**
  * APP_MQTT_BROKER_HOST_URL is the MQTT broker host address URL.
  */
-#define APP_MQTT_BROKER_HOST_URL            "xxx"
+#define APP_MQTT_BROKER_HOST_URL            "MQTT_BROKER_ADDRESS"
 
 /**
  * APP_MQTT_BROKER_HOST_PORT is the MQTT broker host port.
@@ -125,12 +125,12 @@
 /**
  * APP_MQTT_CLIENT_ID is the device name
  */
-#define APP_MQTT_CLIENT_ID                  "xxx"
+#define APP_MQTT_CLIENT_ID                  "XDK_Device1"
 
 /**
  * APP_MQTT_TOPIC is the topic to subscribe and publish
  */
-#define APP_MQTT_TOPIC                      "xxx"
+#define APP_MQTT_TOPIC                      "MQTT_TOPIC"
 
 /**
  * APP_MQTT_SECURE_ENABLE is a macro to enable MQTT with security

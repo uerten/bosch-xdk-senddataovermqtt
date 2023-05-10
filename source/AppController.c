@@ -77,6 +77,7 @@
 #include "XDK_ServalPAL.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "BatteryMonitor.h"
 
 /* constant definitions ***************************************************** */
 
@@ -293,16 +294,18 @@ static void AppControllerFire(void* pvParameters)
 
     Retcode_T retcode = RETCODE_OK;
     Sensor_Value_T sensorValue;
-    Accelerometer_XyzData_T accelData;
+    /*Accelerometer_XyzData_T accelData;*/
+    /*uint32_t batteryVoltage;*/
 
     char publishBuffer[APP_MQTT_DATA_BUFFER_SIZE];
-    const char *publishDataFormat = "{\"hum\": %ld,\"pres\": %ld,\"temp\": %f,\"x\": %ld,\"y\": %ld,\"z\": %ld}";
+    /*const char *publishDataFormat = "{\"hum\": %ld,\"pres\": %ld,\"temp\": %f,\"x\": %ld,\"y\": %ld,\"z\": %ld, \"battery\": %f}";*/
+    const char *publishDataFormat = "{\"hum\": %ld,\"pres\": %ld,\"temp\": %f}";
     /*const char *publishDataFormat = "Environmental Data -\n"
                 "\r\tHumidity : %ld\n"
                 "\r\tPressure : %ld\n"
                 "\r\tTemperature : %f\xf8\n";*/
     memset(&sensorValue, 0x00, sizeof(sensorValue));
-    memset(&accelData, 0x00, sizeof(accelData));
+    /*memset(&accelData, 0x00, sizeof(accelData));*/
 #if APP_MQTT_SECURE_ENABLE
 
     uint64_t sntpTimeStampFromServer = 0UL;
@@ -372,14 +375,15 @@ static void AppControllerFire(void* pvParameters)
 		if (RETCODE_OK == retcode)
 		{
 			retcode = Sensor_GetData(&sensorValue);
-			retcode = Sensor_GetAccel(&accelData);
+			/*retcode = Sensor_GetAccel(&accelData);*/
+			/*retcode = BatteryMonitor_MeasureSignal(&batteryVoltage);*/
 		}
 		if (RETCODE_OK == retcode)
 		{
 			int32_t length = snprintf((char *) publishBuffer, APP_MQTT_DATA_BUFFER_SIZE, publishDataFormat,
 					(long int) sensorValue.RH, (long int) sensorValue.Pressure,
-					(sensorValue.Temp /= 1000), (long int) accelData.xAxisData, (long int) accelData.yAxisData,
-                    (long int) accelData.zAxisData);
+					(sensorValue.Temp /= 1000)/*, (long int) accelData.xAxisData, (long int) accelData.yAxisData,
+                    (long int) accelData.zAxisData, (int)batteryVoltage*/);
 
 			MqttPublishInfo.Payload = publishBuffer;
 			MqttPublishInfo.PayloadLength = length;
@@ -431,6 +435,11 @@ static void AppControllerEnable(void * param1, uint32_t param2)
     if (RETCODE_OK == retcode)
     {
         retcode = MQTT_Enable();
+    }
+    /* added to start battery monitor module */
+    if (RETCODE_OK == retcode)
+    {
+    	retcode = BatteryMonitor_Init();
     }
     if (RETCODE_OK == retcode)
     {
